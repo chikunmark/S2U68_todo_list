@@ -10,8 +10,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
-
 const db = mongoose.connection
+
+const exphbs = require('express-handlebars')
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
 
 db.on('error', () => {
   console.log('mongodb error!!')
@@ -22,7 +25,8 @@ db.once('open', () => {  // 因只會發生一次，所以用 once
 })
 
 app.get('/', (req, res) => {
-  res.send('hello world!')
+  // res.send('hello world!')
+  res.render('index')
 })
 
 app.listen(port, () => {
