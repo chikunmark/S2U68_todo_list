@@ -49,17 +49,26 @@ app.get('/todos/new', (req, res) => {
 // 我搞錯整個 app.get 或 app.post 等語法的意思了，它不是說 listen 到 /todos，就轉到某個網址，而是 listen 到 /todos，就做後面的匿名函式
 app.post('/todos', (req, res) => {
   const name = req.body.name
-  // const todo = new Todo({ name })
-  // console.log(req.body) // 來試試
+  console.log(req.body) // 來試試
 
+  // const todo = new Todo({ name })
   // return todo
   //   .save()
   //   .then(() => res.redirect('/')) // 有機會的話，查 redirect 定義
   //   .catch(error => console.log(error))
+
+  // 上下寫法的結果完全相同，上面是先在 JS 新增一 object，再將它存到 mongoose，下面則是直接要 mongoose 新增一 object
   return Todo.create({ name })
     .then(() => res.redirect('/')) // 有機會的話，查 redirect 定義
     .catch(error => console.log(error))
+})
 
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then(todo => res.render('detail', { todo }))
+    .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
