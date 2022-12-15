@@ -5,6 +5,7 @@
   <li>
     {{this.name}}
     <a href="./todos/{{this._id}}">detail</a> {{!-- _id 是 MongoDB 自動建立的，可利用 --}}
+    <a href="./todos/{{this._id}}/edit">edit</a>
   </li>
   {{/each}}
 </ul>
