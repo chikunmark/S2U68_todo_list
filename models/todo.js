@@ -6,8 +6,9 @@ const todoSchema = new Schema({
     type: String,
     required: true  // 是必填欄位，不能為空白
   },  // 先故意不加 ","  看看會怎樣
-  done: {
-    type: Boolean
+  isDone: {
+    type: Boolean,
+    default: false
   }
 })
 

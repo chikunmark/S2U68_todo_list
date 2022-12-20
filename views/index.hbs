@@ -3,6 +3,7 @@
 <ul>
   {{#each todos}}
   <li>
+    <input type="checkbox" name="isDone" {{#if this.isDone}} checked {{/if}} disabled > {{!-- 因是用於純顯示，所以要加 disabled --}}
     {{this.name}}
     <a href="./todos/{{this._id}}">detail</a> {{!-- _id 是 MongoDB 自動建立的，可利用 --}}
     <a href="./todos/{{this._id}}/edit">edit</a>
