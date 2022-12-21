@@ -1,40 +1,24 @@
 const express = require('express')
-const port = 3000
-const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const Todo = require('./models/todo') // 最後助教居然大小寫都有用，只能依著改了
 const methodOverride = require('method-override')
+const exphbs = require('express-handlebars')
 
 const routes = require('./routes/index') // 可不寫 /index，因為預設會去找它
+// 有關連線到 DB (mongoose) 的設定，也全都移到 mongoose.js，只剩載入指令 (如下)
+require('./config/mongoose')
 
-// 加入這段 code, 僅在非正式環境時, 使用 dotenv
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
-
+const port = 3000
 const app = express()
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
-const db = mongoose.connection
 
-const exphbs = require('express-handlebars')
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method')) // 只要代入 _method，它後面的內容就會直接轉換成對應的 HTTP method
-app.use(routes)
+app.use(routes) // 要使用這個做為路由器檔案
 
-db.on('error', () => {
-  console.log('mongodb error!!')
-})
-
-db.once('open', () => {
-  // 因只會發生一次，所以用 once
-  console.log('mongoDB connected!!')
-})
-
-// 不用了，因為被搬到 home.js
+// 首頁的路由不用了，因為被搬到 home.js
 // app.get('/', (req, res) => {
 //   // res.send('hello world!') // 引入 handlebars 後就不用了
 

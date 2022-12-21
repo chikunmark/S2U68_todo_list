@@ -63,6 +63,7 @@ router.put('/:id', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
+    // S4U83 才有的筆記，刪去 /todos 僅能刪 listening 部分，之後要 "導到" 的目的地 (如上)，不能刪除
     .catch(error => console.log(error))
 })
 
