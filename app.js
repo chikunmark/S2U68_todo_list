@@ -3,6 +3,7 @@ const port = 3000
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const Todo = require('./models/todo') // 最後助教居然大小寫都有用，只能依著改了
+const methodOverride = require('method-override')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -19,6 +20,7 @@ app.set('view engine', 'hbs')
 
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method')) // 只要代入 _method，它後面的內容就會直接轉換成對應的 HTTP method
 
 db.on('error', () => {
   console.log('mongodb error!!')
@@ -80,7 +82,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
 
   // const name = req.body.name
@@ -106,7 +108,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     // .then(console.log(Boolean(Todo.findById(id))))  // 沒試成

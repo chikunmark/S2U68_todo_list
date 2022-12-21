@@ -7,7 +7,7 @@
     {{this.name}}
     <a href="./todos/{{this._id}}">detail</a> {{!-- _id 是 MongoDB 自動建立的，可利用 --}}
     <a href="./todos/{{this._id}}/edit">edit</a>
-    <form action="./todos/{{this._id}}/delete" method="POST" style="display: inline;">
+    <form action="./todos/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
       <button type="submit">delete</button>
     </form>
   </li>
